@@ -111,25 +111,30 @@ const CartController = {
 
   removeFromCart: async (req, res) => {
   try {
-    const { id } = req.params;
+    const { cartId, productId } = req.params;
 
-    console.log('Removing item from cart:', id);
+    console.log('Removing item from cart:', productId);
 
     // Find the cart
-    const cart = await Cart.findById(id);
+    const cart = await Cart.findOne({ user: cartId }); // Assuming `cartId` is the user ID here
     if (!cart) {
       console.log('Cart not found');
       return res.status(404).json({ message: 'Cart not found' });
     }
 
     // Remove the item
-    const itemIndex = cart.items.findIndex(item => item._id.equals(id));
-    if (itemIndex === -1) {
-      console.log('Item not found in cart');
-      return res.status(404).json({ message: 'Item not found in cart' });
-    }
-    const removedItem = cart.items.splice(itemIndex, 1)[0];
-    cart.totalPrice -= removedItem.quantity * removedItem.product.price;
+    const filteredItems = cart.items.filter(item => item.product._id.equals(productId));
+    if (filteredItems.length < cart.items.length) {
+    // Logic to handle item removal (e.g., remove all matching items, update totalPrice)
+    cart.items = filteredItems; // Update cart.items with filtered items
+    const removedItems = cart.items.splice(0, cart.items.length - filteredItems.length); // Remove all matching items (adjust as needed)
+    removedItems.forEach(item => {
+        cart.totalPrice -= item.quantity * item.product.price;
+    });
+} else {
+    console.log('Item with product ID not found in cart');
+    return res.status(404).json({ message: 'Item with product ID not found in cart' });
+}
 
     // Save the updated cart
     await cart.save();

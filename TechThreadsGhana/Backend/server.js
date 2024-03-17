@@ -21,7 +21,7 @@ app.use('/api/update-profile', authMiddleware.authenticateToken);
 app.use('/api/change-password', authMiddleware.authenticateToken);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/cart', cartRoutes);
+app.use('/api/carts', cartRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
