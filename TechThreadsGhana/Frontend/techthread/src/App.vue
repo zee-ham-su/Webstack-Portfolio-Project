@@ -1,15 +1,15 @@
 <template>
   <img alt="Vue logo" src="./assets/e-commerce-3692440_1280.jpg">
-  <HelloWorld msg="Welcome to TechThread App"/>
+  <HomePage msg="Welcome to TechThread App"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './components/HomePage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HomePage
   }
 }
 </script>
