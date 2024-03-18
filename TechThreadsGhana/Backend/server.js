@@ -6,6 +6,7 @@ const productRoutes = require('./routes/productRoutes');
 const authMiddleware = require('./middlewares/authMiddleware');
 const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 require('dotenv').config();
 
@@ -22,6 +23,8 @@ app.use('/api/change-password', authMiddleware.authenticateToken);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/carts', cartRoutes);
+app.use('/api/reviews', authMiddleware.authenticateToken);
+app.use('/api/reviews', reviewRoutes)
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

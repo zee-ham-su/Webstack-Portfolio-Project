@@ -4,7 +4,7 @@ const ReviewController = {
   async createReview(req, res) {
     try {
       const { productId, rating, comment } = req.body;
-      const userId = req.user.id; // Assuming user ID is available in request object
+      const userId = req.user.userId;
 
       // Create a new review
       const review = new Review({
