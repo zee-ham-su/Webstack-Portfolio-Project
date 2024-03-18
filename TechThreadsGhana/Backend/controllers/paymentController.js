@@ -3,10 +3,6 @@ const Payment = require('../models/payment');
 const PaymentController = {
   async processPayment(req, res) {
     try {
-      // Implement payment processing logic here
-      // This could involve integrating with a payment gateway such as Stripe or PayPal
-
-      // For demonstration purposes, let's assume payment processing is successful
       const { orderId, paymentMethod, transactionId, amount } = req.body;
 
       // Create a new payment record
