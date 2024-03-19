@@ -4,7 +4,7 @@
     <router-link to="/about">About</router-link>  |
     <router-link to="/products">Products</router-link>  |
     <router-link to="/cart">Cart</router-link>  |
-    <router-link to="/productdetail">ProductDetail</router-link>
+    <router-link to="/products/:id">ProductDetail</router-link>
   </nav>
   <router-view/>
 </template>
