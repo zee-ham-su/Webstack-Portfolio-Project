@@ -1,33 +1,31 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
-const authMiddleware = require('./middlewares/authMiddleware');
-const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const path = require('path');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const connectDB = require('./mondb.js');
 connectDB();
 
-
+app.use(bodyParser.json());
+app.use(cors());
 app.use(express.json());
 
-app.use('/api', userRoutes);
-app.use('/api/profile', authMiddleware.authenticateToken);
-app.use('/api/update-profile', authMiddleware.authenticateToken);
-app.use('/api/change-password', authMiddleware.authenticateToken);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/carts', cartRoutes);
-app.use('/api/reviews', authMiddleware.authenticateToken);
-app.use('/api/reviews', reviewRoutes)
+app.use(express.static(path.join(__dirname, 'public/images')));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.use('/api/products', productRoutes);
+app.use('/api/carts', cartRoutes);
+app.use('/api/reviews', reviewRoutes);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(3000, () => {

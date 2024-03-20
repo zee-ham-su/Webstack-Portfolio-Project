@@ -1,33 +1,42 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link>  |
-    <router-link to="/about">About</router-link>  |
-    <router-link to="/products">Products</router-link>  |
-    <router-link to="/cart">Cart</router-link>  |
-    <router-link to="/products/:id">ProductDetail</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <NavBar/>
+    <router-view/>
+  </div>
 </template>
 
+<script>
+import NavBar from './components/NavBar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    NavBar,
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  * {
+    box-sizing: border-box;
+    font-family: Arial;
+  }
 
-nav {
-  padding: 30px;
-}
+  #page-wrap {
+    margin: auto;
+    max-width: 800px;
+    min-height: 100vh;
+  }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+  button {
+    background-color: black;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    outline: 0;
+    padding: 16px;
+  }
 </style>

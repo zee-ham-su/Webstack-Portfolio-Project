@@ -1,4 +1,6 @@
-const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
+// Used to proxy requests to the backend server
+module.exports = {
+ devServer: {
+  proxy: 'http://localhost:3000'
+}
+}

@@ -4,9 +4,31 @@ const orderController = {
     // Create a new order
     async createOrder(req, res) {
         try {
-            const { user, products, totalAmount, status } = req.body;
-            const order = new Order({ user, products, totalAmount, status });
+            console.log('Request body:', req.body);
+
+            const { products, status } = req.body;
+
+            // Validate products array
+            if (!Array.isArray(products) || products.length === 0) {
+                return res.status(400).json({ msg: 'Products array is empty or invalid' });
+            }
+
+            // Calculate total amount based on product prices and quantities
+            let totalAmount = 0;
+            for (const product of products) {
+                console.log('Product:', product);
+                if (!product.price || !product.quantity || isNaN(product.price) || isNaN(product.quantity)) {
+                    return res.status(400).json({ msg: 'Invalid product data' });
+                }
+                totalAmount += product.price * product.quantity;
+            }
+            console.log('Total amount:', totalAmount);
+
+            // Create new order
+            const order = new Order({ products, totalAmount, status });
+            console.log('New order:', order);
             await order.save();
+            console.log('Order saved successfully');
             return res.status(201).json({ msg: 'Order created successfully', order });
         } catch (error) {
             console.error(error);

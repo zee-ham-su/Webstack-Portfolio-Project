@@ -4,11 +4,9 @@ const ReviewController = {
   async createReview(req, res) {
     try {
       const { productId, rating, comment } = req.body;
-      const userId = req.user.userId;
 
       // Create a new review
       const review = new Review({
-        user: userId,
         product: productId,
         rating,
         comment
@@ -28,7 +26,7 @@ const ReviewController = {
       const productId = req.params.productId;
 
       // Find all reviews for the specified product
-      const reviews = await Review.find({ product: productId }).populate('user');
+      const reviews = await Review.find({ product: productId });
 
       return res.json(reviews);
     } catch (error) {

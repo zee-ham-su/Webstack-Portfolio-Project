@@ -114,15 +114,6 @@ const ProductController = {
                 return res.status(404).json({ msg: 'Product not found' });
             }
 
-            // Check if product is referenced in any carts before deletion
-            const cartsWithProduct = await Cart.find({ items: { $elemMatch: { product: id } } });
-
-            if (cartsWithProduct.length > 0) {
-            // Handle the case where product is referenced in carts
-            console.warn('Product is referenced in carts.');
-            return res.status(409).json({ msg: 'Product is referenced in carts. Cannot delete.' });
-            }
-
             await product.deleteOne();
             return res.json({ msg: 'Product deleted successfully' });
         } catch (error) {

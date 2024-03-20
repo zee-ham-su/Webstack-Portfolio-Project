@@ -5,15 +5,11 @@ const mongoose = require('mongoose');
 const CartController = {
   addToCart: async (req, res) => {
     try {
-      const { user, items } = req.body;
+      const { items } = req.body;
 
-      console.log('Adding to cart:', { user, items });
+      console.log('Adding to cart:', items);
 
-      let cart = await Cart.findOne({ user });
-      if (!cart) {
-        console.log('Cart not found, creating new cart');
-        cart = new Cart({ user });
-      }
+      let cart = new Cart();
 
       for (const item of items) {
         const { product: productId, quantity } = item;
@@ -51,11 +47,7 @@ const CartController = {
 
   getCart: async (req, res) => {
     try {
-      const userId = req.user.userId;
-      const userObjectId = new mongoose.Types.ObjectId(userId);
-      console.log('Fetching cart for user:', userId);
-
-      const cart = await Cart.findOne({ user: userObjectId }).populate('items.product');
+      const cart = await Cart.findById(req.params.cartId).populate('items.product');
       console.log('Retrieved cart:', cart);
     
       if (!cart) {
