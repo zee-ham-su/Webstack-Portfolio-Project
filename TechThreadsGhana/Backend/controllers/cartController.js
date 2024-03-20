@@ -45,20 +45,14 @@ const CartController = {
     }
   },
 
-  getCart: async (req, res) => {
+  getAllCarts: async (req, res) => {
     try {
-      const cart = await Cart.findById(req.params.cartId).populate('items.product');
-      console.log('Retrieved cart:', cart);
-    
-      if (!cart) {
-        console.log('Cart not found');
-        return res.status(404).json({ message: 'Cart not found' });
-      }
-
-      console.log('Cart fetched successfully');
-      res.json(cart);
+      const carts = await Cart.find(); // Retrieve all carts
+      console.log('Retrieved all carts:', carts);
+      
+      res.json(carts);
     } catch (error) {
-      console.error('Error fetching cart:', error.message);
+      console.error('Error fetching carts:', error.message);
       res.status(500).json({ message: error.message });
     }
   },

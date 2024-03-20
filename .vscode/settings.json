@@ -5,6 +5,7 @@
         "axios",
         "mondb",
         "productdetail",
+        "resave",
         "techthread",
         "Userfront",
         "virtuals",
