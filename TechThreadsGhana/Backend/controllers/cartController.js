@@ -105,44 +105,48 @@ const CartController = {
   }
 },
 
-  removeFromCart: async (req, res) => {
+  deleteCartItem: async (req, res) => {
     try {
       const { cartId, itemId } = req.params;
+      console.log('Deleting cart item:', { cartId, itemId });
 
-      console.log('Removing item from cart:', { cartId, itemId });
-
-      // Find the cart
+      // Find the cart by ID
       const cart = await Cart.findById(cartId);
       if (!cart) {
-        console.log('Cart not found');
         return res.status(404).json({ message: 'Cart not found' });
       }
 
-      // Find the item in the cart and remove it
-      const itemIndex = cart.items.findIndex(item => item._id.equals(itemId));
-      if (itemIndex === -1) {
-        console.log('Item not found in cart');
-        return res.status(404).json({ message: 'Item not found in cart' });
-      }
+      // Remove the item from the cart's items array
+      cart.items = cart.items.filter(item => item._id.toString() !== itemId);
 
-      // Update the cart: remove the item and update total price
-      const removedItem = cart.items.splice(itemIndex, 1)[0];
-      console.log('Removed item:', removedItem);
-      if (removedItem.product && typeof removedItem.product.price === 'number') {
-        cart.totalPrice -= removedItem.quantity * removedItem.product.price;
-      } else {
-        console.log('Product price is not available or is not a number');
-        cart.totalPrice = 0;
-      }
+      // Recalculate the total price
+      cart.totalPrice = cart.items.reduce((total, item) => total + (item.quantity * item.product.price), 0);
 
       // Save the updated cart
       await cart.save();
 
-      console.log('Item removed from cart successfully');
-      res.json(cart);
+      return res.json({ message: 'Item deleted from cart', cart });
     } catch (error) {
-      console.error('Error removing item from cart:', error.message);
-      res.status(500).json({ message: error.message });
+      console.error('Error deleting cart item:', error.message);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  deleteCart: async (req, res) => {
+    try {
+      const { cartId } = req.params;
+      console.log('Deleting cart:', cartId);
+
+      // Find the cart by ID and delete it
+      const deletedCart = await Cart.findByIdAndDelete(cartId);
+      if (!deletedCart) {
+        return res.status(404).json({ message: 'Cart not found' });
+      }
+
+      return res.json({ message: 'Cart deleted successfully', deletedCart });
+    } catch (error) {
+      console.error('Error deleting cart:', error.message);
+      res.status(500).json({ message: 'Internal server error' });
     }
   }
 };
