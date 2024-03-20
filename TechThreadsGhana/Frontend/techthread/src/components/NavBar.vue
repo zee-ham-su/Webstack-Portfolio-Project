@@ -12,9 +12,6 @@
     <router-link to="/cart" id="cart-link">
       <button>Shopping Cart</button>
     </router-link>
-    <router-link to="/login" id="login-link">
-      <button>Login</button>
-    </router-link>
   </div>
 </template>
 

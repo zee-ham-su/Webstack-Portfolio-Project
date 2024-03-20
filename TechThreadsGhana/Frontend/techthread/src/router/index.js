@@ -3,7 +3,6 @@ import CartPage from '../views/CartPage.vue';
 import ProductDetailPage from '../views/ProductDetailPage.vue';
 import ProductsPage from '../views/ProductsPage.vue';
 import NotFoundPage from '../views/NotFoundPage.vue';
-import LoginPage from '../components/LoginPage.vue';
 
 const routes = [
   {
@@ -25,10 +24,6 @@ const routes = [
     path: '/:catchAll(.*)',
     name: 'NotFound',
     component: NotFoundPage,
-  }, {
-    path: '/login',
-    name: 'Login',
-    component: LoginPage,
   }
 ]
 

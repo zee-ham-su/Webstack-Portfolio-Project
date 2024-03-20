@@ -5,7 +5,7 @@
     </div>
     <div id="product-details">
       <h1>{{ product.name }}</h1>
-      <h3 id="price">${{ product.price }}</h3>
+      <h3 id="price">GH₵{{ product.price }}</h3>
       <p>Average rating: {{ product.averageRating }}</p>
       <button
         id="add-to-cart"
@@ -52,7 +52,7 @@ export default {
     },
     methods: {
       async addToCart() {
-        await apiClient.post('/api/users/12345/cart', {
+        await apiClient.post('/api/carts', {
           productId: this.$route.params.id,
         });
         this.showSuccessMessage = true;
@@ -65,7 +65,7 @@ export default {
       const { data: product } = await apiClient.get(`/api/products/${this.$route.params.id}`);
       this.product = product;
 
-      const { data: cartItems } = await apiClient.get('/api/users/12345/cart');
+      const { data: cartItems } = await apiClient.get('/api/carts');
       this.cartItems = cartItems;
     }
 };
