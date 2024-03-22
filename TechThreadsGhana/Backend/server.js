@@ -18,13 +18,13 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, '..', 'Frontend', 'public')));
+app.use(express.static(path.join(__dirname, '..', 'Backend', 'public')));
 
 // Fallback route to serve HTML files
-app.get('*', (req, res) => {
-  const requestedFile = req.params['0'];
-  res.sendFile(path.join(__dirname, '..', 'Frontend', 'public', requestedFile));
-});
+// app.get('*', (req, res) => {
+ // const requestedFile = req.params['0'];
+  //res.sendFile(path.join(__dirname, '..', 'Frontend', 'public', requestedFile));
+// }); //
 
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
