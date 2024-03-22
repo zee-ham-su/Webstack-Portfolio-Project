@@ -33,12 +33,12 @@ export default {
     },
     methods: {
       async removeFromCart(productId) {
-        const result = await apiClient.delete(`/api/users/12345/cart/${productId}`);
+        const result = await apiClient.delete(`/api/carts/${productId}`);
         this.cartItems = result.data;
       }
     },
     async created() {
-      const result = await apiClient.get('/api/users/12345/cart');
+      const result = await apiClient.get('/api/carts');
       const cartItems = result.data;
       this.cartItems = cartItems;
     },
