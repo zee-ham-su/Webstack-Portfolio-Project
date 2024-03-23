@@ -7,24 +7,12 @@
       <h1>{{ product.name }}</h1>
       <h3 id="price">${{ product.price }}</h3>
       <p>Average rating: {{ product.averageRating }}</p>
-      <button
-        id="add-to-cart"
-        v-if="!itemIsInCart && !showSuccessMessage"
-        @click="addToCart"
-        :class="{ 'btn-animated': showSuccessMessage }"
-      >Add to Cart</button>
-      <button
-        id="add-to-cart"
-        class="green-button"
-        v-if="!itemIsInCart && showSuccessMessage"
-        :class="{ 'btn-animated': showSuccessMessage }"
-      >Successfully added item to cart!</button>
-      <button
-        id="add-to-cart"
-        class="grey-button"
-        v-if="itemIsInCart"
-        :class="{ 'btn-animated': showSuccessMessage }"
-      >Item is already in cart</button>
+      <button id="add-to-cart" v-if="!itemIsInCart && !showSuccessMessage" @click="addToCart"
+        :class="{ 'btn-animated': showSuccessMessage }">Add to Cart</button>
+      <button id="add-to-cart" class="green-button" v-if="!itemIsInCart && showSuccessMessage"
+        :class="{ 'btn-animated': showSuccessMessage }">Successfully added item to cart!</button>
+      <button id="add-to-cart" class="grey-button" v-if="itemIsInCart"
+        :class="{ 'btn-animated': showSuccessMessage }">Item is already in cart</button>
       <h4>Description</h4>
       <p>{{ product.description }}</p>
     </div>
@@ -44,22 +32,12 @@ export default {
   },
   setup() {
     const product = ref({});
-    const cartItems = ref([]); // Initialize cartItems array
     const showSuccessMessage = ref(false);
-
     const itemIsInCart = ref(false);
 
-    const addToCart = async () => {
-      try {
-        await apiClient.post('/api/carts/add', {
-          productId: product.value._id,
-        });
-        showSuccessMessage.value = true;
-        setTimeout(() => {
-          showSuccessMessage.value = false;
-        }, 1500);
-      } catch (error) {
-        console.error('Error adding to cart:', error);
+    const addToCart = () => {
+      if (product.value._id) {
+        this.$emit('add-to-cart', product.value._id);
       }
     };
 
@@ -72,27 +50,12 @@ export default {
       }
     };
 
-    const getCartItems = async () => {
-      try {
-        const { data: fetchedCartItems } = await apiClient.get('/api/carts');
-        // Check if fetchedCartItems is iterable
-        if (Array.isArray(fetchedCartItems)) {
-          cartItems.value = fetchedCartItems;
-          itemIsInCart.value = fetchedCartItems.some(item => item.id === product.value._id);
-        }
-      } catch (error) {
-        console.error('Error fetching cart items:', error);
-      }
-    };
-
     onMounted(() => {
       getProduct();
-      getCartItems();
     });
 
     return {
       product,
-      cartItems,
       showSuccessMessage,
       itemIsInCart,
       addToCart,
@@ -100,6 +63,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 #page-wrap {
